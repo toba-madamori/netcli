@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/exec"
+
+	"github.com/toba-madamori/netcli/internal/netutils"
 )
 
 func main() {
@@ -28,7 +29,7 @@ func main() {
 			os.Exit(1)
 		}
 		host := args[1]
-		err := runSystemPing(host)
+		err := netutils.GoPing(host)
 
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -42,10 +43,10 @@ func main() {
 
 }
 
-func runSystemPing(host string) error {
-	// Windows uses "ping -n 4", Linux/Mac uses "ping -c 4"
-	cmd := exec.Command("ping", "-n", "4", host) // change -n to -c if on Linux/Mac
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
+// func runSystemPing(host string) error {
+// 	// Windows uses "ping -n 4", Linux/Mac uses "ping -c 4"
+// 	cmd := exec.Command("ping", "-n", "4", host) // change -n to -c if on Linux/Mac
+// 	cmd.Stdout = os.Stdout
+// 	cmd.Stderr = os.Stderr
+// 	return cmd.Run()
+// }
