@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 )
 
 func main() {
@@ -22,7 +23,16 @@ func main() {
 
 	switch command {
 	case "ping":
-		fmt.Println("You called ping!")
+		if len(args) < 2 {
+			fmt.Println("Usage: netcli ping <host>")
+			os.Exit(1)
+		}
+		host := args[1]
+		err := runSystemPing(host)
+
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 	case "lookup":
 		fmt.Println("You called lookup!")
 	default:
@@ -30,4 +40,12 @@ func main() {
 		os.Exit(1)
 	}
 
+}
+
+func runSystemPing(host string) error {
+	// Windows uses "ping -n 4", Linux/Mac uses "ping -c 4"
+	cmd := exec.Command("ping", "-n", "4", host) // change -n to -c if on Linux/Mac
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
 }
