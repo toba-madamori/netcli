@@ -35,7 +35,24 @@ func main() {
 			fmt.Println("Error:", err)
 		}
 	case "lookup":
-		fmt.Println("You called lookup!")
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: netcli lookup <hostname>")
+			os.Exit(1)
+		}
+
+		host := os.Args[2]
+		cname, ips, err := netutils.LookupHost(host)
+		if err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("Canonical name:", cname)
+		fmt.Println("IP addresses:")
+		for _, ip := range ips {
+			fmt.Println(" -", ip)
+		}
+
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		os.Exit(1)

@@ -29,7 +29,8 @@ func GoPing(host string) error {
 		Type: ipv4.ICMPTypeEcho,
 		Code: 0,
 		Body: &icmp.Echo{
-			ID: os.Getpid() & 0xffff, Seq: 1,
+			ID:   os.Getpid() & 0xffff,
+			Seq:  1,
 			Data: []byte("Hello-Ping"),
 		},
 	}
