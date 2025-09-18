@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-
-	"github.com/toba-madamori/netcli/internal/netutils"
 )
 
 func main() {
@@ -28,31 +26,13 @@ func main() {
 			fmt.Println("Usage: netcli ping <host>")
 			os.Exit(1)
 		}
-		host := args[1]
-		err := netutils.GoPing(host)
-
-		if err != nil {
-			fmt.Println("Error:", err)
-		}
+		runPing(args[1])
 	case "lookup":
 		if len(os.Args) < 3 {
 			fmt.Println("Usage: netcli lookup <hostname>")
 			os.Exit(1)
 		}
-
-		host := os.Args[2]
-		cname, ips, err := netutils.LookupHost(host)
-		if err != nil {
-			fmt.Println("Error:", err)
-			os.Exit(1)
-		}
-
-		fmt.Println("Canonical name:", cname)
-		fmt.Println("IP addresses:")
-		for _, ip := range ips {
-			fmt.Println(" -", ip)
-		}
-
+		runLookup(args[1])
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		os.Exit(1)
